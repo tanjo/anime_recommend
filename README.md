@@ -72,7 +72,7 @@ source bin/activate
 ### 7 必要な外部ライブラリを入れる
 
 ```
-pip install -r packages_ubuntu.txt
+pip install -r requirements.txt
 ```
 
 ### 8 作者のコードを順番に実行
