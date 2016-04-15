@@ -10,6 +10,8 @@
 
 ## 手順
 
+初歩的なところは記憶が曖昧なので多分これでいけるはず…
+
 ### 1 まず、アニメの情報を蓄えておくフォルダを作成する.
 
 ```
@@ -28,34 +30,52 @@ echo "backend : TkAgg" > matplotlibrc
 popd
 ```
 
-### 2 仮想環境をつくる
+### 2 Python をインストール
+
+Mac なので [Homebrew](http://brew.sh/index_ja.html) を使ってます
+
+Windows の場合はいい感じにしてください
+
+```
+brew install python3
+```
+
+### 3 pip のインストール
+
+```
+sudo easy_install pip
+```
+
+### 4 仮想環境をつくる
 
 [virtualenv](https://virtualenv.pypa.io/en/latest/) を使う
 
 ```
-sudo easy_install virtualenv
+sudo pip install virtualenv
 ```
 
-### 3 仮想環境 構築
+### 5 仮想環境 構築
+
+Python は python3 を使うように指定
 
 ```
 virtualenv ENV --python /usr/local/bin/python3
 ```
 
-### 4 仮想環境 起動
+### 6 仮想環境 起動
 
 ```
 cd ENV
 source bin/activate
 ```
 
-### 5 必要な外部ライブラリを入れる
+### 7 必要な外部ライブラリを入れる
 
 ```
 pip install -r packages_ubuntu.txt
 ```
 
-### 6 作者のコードを順番に実行
+### 8 作者のコードを順番に実行
 
 ```
 python eval_animes.py
@@ -64,7 +84,7 @@ python convert_to_features.py
 python anime_reccomend.py
 ```
 
-### 7 仮想環境 終了
+### 9 仮想環境 終了
 
 ```
 deactivate
@@ -96,4 +116,4 @@ http://cal.syoboi.jp/tid/4136
 - [美少女戦士セーラームーンCrystal(デス・バスターズ編) - しょぼいカレンダー](http://cal.syoboi.jp/tid/4136)
 
 お、おう…
-もう 10 年くらいまで昔のアニメの情報も入れられると面白いかもしれない
+もう 10 年くらい昔のアニメの情報も入れられると面白いかもしれない
