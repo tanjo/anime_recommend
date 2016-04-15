@@ -22,7 +22,7 @@ mkdir anime_infos
 
 ※ Mac の場合、以下の現象が起きるので追加作業がある
 
-[backend : TkAgg](http://qiita.com/katryo/items/918667f28301fdec89ba)
+[Python 3.3でmatplitlibとpylabを使おうとしたら RuntimeError: Python is not installed as a frameworkというエラーが発生したときの解決方法 - Qiita](http://qiita.com/katryo/items/918667f28301fdec89ba)
 
 ```
 pushd ~/.matplotlib
