@@ -1,6 +1,5 @@
 # anime_recommend
 anime_infos/*
-!anime_infos/.gitkeep
 eval_anime_save.json
 *.tsv
 
