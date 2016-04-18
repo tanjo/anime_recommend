@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import fbeta_score
 from sklearn.metrics import precision_recall_fscore_support
+from sklearn.utils import shuffle
 
 import matplotlib.pyplot as plt
 
@@ -16,15 +17,32 @@ FEATURE_FILE = 'feature.tsv'
 ANSWER_FILE = 'answer.tsv'
 TARGET_FILE = 'target.tsv'
 
+def over_sample(x,y):
+    elems_0 = x[(y == 0)]
+    elems_1 = x[(y == 1)]
+
+    l = elems_1.shape[0]
+    new_elems_0 = shuffle(elems_0, n_samples=l)
+    new_y_0 = np.empty(l)
+    new_y_0.fill(0)
+    new_y_1 = np.empty(elems_1.shape[0])
+    new_y_1.fill(1)
+
+    xs = np.concatenate((new_elems_0, elems_1))
+    ys = np.concatenate((new_y_0, new_y_1))
+    print(xs.shape)
+    print(ys.shape)
+
+    return shuffle(xs, ys)
+
 def load_data():
     X_all = np.loadtxt(FEATURE_FILE, delimiter="\t", dtype='float32')
     y_all = np.loadtxt(ANSWER_FILE, delimiter="\t", dtype='int')
     target = np.loadtxt(TARGET_FILE, delimiter="\t", dtype='float32')
 
-    X_train, X_rest, y_train, y_rest = cross_validation.train_test_split(X_all, y_all, test_size=0.4, random_state=5)
-    X_val, X_test, y_val, y_test = cross_validation.train_test_split(X_rest, y_rest, test_size=0.5, random_state=5)
+    X_train, X_val, y_train, y_val = cross_validation.train_test_split(X_all, y_all, test_size=0.3, random_state=5)
 
-    return (X_train, y_train, X_val, y_val, X_test, y_test, target)
+    return (X_train, y_train, X_val, y_val, target)
 
 class AnimeChain(Chain):
 
@@ -41,8 +59,9 @@ class AnimeChain(Chain):
 
 def train(X, t, hidden_n, weight_decay):
     print(hidden_n, weight_decay)
+
     model = AnimeChain(X.shape[1], hidden_n)
-    optimizer = OS.Adam()
+    optimizer = OS.AdaGrad()
     optimizer.setup(model)
     if weight_decay:
         optimizer.add_hook(O.WeightDecay(weight_decay))
@@ -62,7 +81,7 @@ def train(X, t, hidden_n, weight_decay):
     return model
 
 def main():
-    X_train, y_train, X_val, y_val, X_test, y_test, target = load_data()
+    X_train, y_train, X_val, y_val, target = load_data()
     print(X_train.shape)
 
     weight_decays = [None, 0.0005]
@@ -87,7 +106,7 @@ def main():
     model = train(X_train, y_train, hidden_n = scores[0][0], weight_decay = scores[0][1])
     yd = model(Variable(X_val)).data
     ycmp = (yd[:, 0] < yd[:, 1]).astype(np.int32)
-    print(classification_report(ycmp, y_val))
+    print(classification_report(y_val, y_cmp))
 
     tids_target = target[:, 0]
     X_target = target[:, 1:]
